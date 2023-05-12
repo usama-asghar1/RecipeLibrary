@@ -11,6 +11,15 @@ ingredientButton.addEventListener("click", addIngredient);
 submitButton.addEventListener("click", handleSubmit);
 getRecipeButton.addEventListener("click", handleClick);
 
+const darkModeToggle = document.getElementById('dark-mode-toggle');
+const body = document.querySelector('body');
+
+darkModeToggle.addEventListener('click', () => {
+  body.classList.toggle('dark-mode');
+});
+
+
+
 function addIngredient(event) {
   event.preventDefault();
 

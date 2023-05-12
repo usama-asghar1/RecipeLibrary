@@ -121,3 +121,15 @@ form button:hover {
     max-width: 100%;
   }
 }
+
+body {
+  background-color: #f8f8f8;
+  font-family: "Patrick Hand", cursive;
+  padding: 20px;
+  color: #333;
+}
+
+.dark-mode {
+  background-color: #333;
+  color: #f8f8f8;
+}
