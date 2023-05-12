@@ -17,7 +17,7 @@ app.use(express.json());
 app.get("/api/recipes", async function (req, res) {
   const recipes = await getRecipes();
   res.status(200).send(recipes);
-})
+});
 
 app.get("/api/recipes/:id", async function (req, res) {
   const recipeId = req.params.id;
@@ -29,18 +29,21 @@ app.post("/api/recipes", async function (req, res) {
   const newRecipe = req.body;
   const recipe = await createRecipe(newRecipe); 
   res.status(201).send(recipe);
-})
+});
 
 app.patch("/api/recipes/:id", async function (req, res) {
   const id = req.params.id;
   const changedRecipe = req.body;
   const recipe = await updateRecipeByID(id, changedRecipe); 
   res.status(200).send(recipe);
-})
+});
 
-
+app.delete("/api/recipes/:id", async function (req, res) {
+  const deleteId = req.params.id;
+  const recipe = await deleteRecipeByID(deleteId);
+  res.status(200).send(recipe);
+});
 
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
-
