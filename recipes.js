@@ -15,7 +15,6 @@ export async function getRecipeByID(id) {
     const allRecipes =JSON.parse(allFood)
 for (let i = 0; i < allRecipes.length; i++) {
 if (allRecipes[i].id === id) {
-     console.log (allRecipes[i]) 
      return(allRecipes[i])
 
 }}} 
@@ -26,24 +25,35 @@ export async function createRecipe(newRecipe) {
 const allFood = await fs.readFile(fileName);
 const allRecipes =JSON.parse(allFood)
 allRecipes.push(newRecipe)
-const recipeJSON = JSON.stringify(newRecipe)
+const recipeJSON = JSON.stringify(allRecipes, newRecipe)
 await fs.writeFile(fileName, recipeJSON)
-console.log (allRecipes)
 return(allRecipes)
 }
 
-const newFood = {
-    "ID": "4",
-    "title": "4",
-    "ingredients": ["3"],
-    "instructions": "3",
-    "image": "https://natashaskitchen.com/wp-content/uploads/2019/04/Best-Burger-4-500x375.jpg"
-};
-createRecipe(newFood)
-
-
 // UPDATE A RECIPE BY ID
-export async function updateRecipeByID(id, updatedRecipe) {}
+export async function updateRecipeByID(id, updatedRecipe) {
+  const allFood = await fs.readFile(fileName);
+    const allRecipes = JSON.parse(allFood)
+for (let i = 0; i < allRecipes.length; i++) {
+if (allRecipes[i].id === id) {
+     allRecipes[i] = updatedRecipe
+     const recipeJSON = JSON.stringify(allRecipes)
+     await fs.writeFile(fileName, recipeJSON)
+     console.log(allRecipes)
+     return allRecipes
+}}};
+
+const id = "675675t"
+
+const updatedRecipe = {
+  "id": "675675t",
+  "title": "updated",
+  "ingredients": ["vbhm", "150g of butter", "150g of toast"],
+  "instructions": "Pvbjngm seconds to allow slight melting. Then follow with the toast. Swish around for 10-15 seconds to allow even coating of butter on the toast. Then add the beans, slowly.\n  \n    Season to taste.",
+  "image": "https://natashaskitchen.com/wp-content/uploads/2019/04/Best-Burger-4-500x375.jpg"
+}
+
+updateRecipeByID(id, updatedRecipe)
 
 // DELETE A RECIPE BY ID
 export async function deleteRecipeByID(id) {}
