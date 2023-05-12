@@ -20,11 +20,27 @@ if (allRecipes[i].id === id) {
 
 }}} 
 
-getRecipeByID("3")
-
 
 // CREATE A RECIPE
-export async function createRecipe(newRecipe) {}
+export async function createRecipe(newRecipe) {
+const allFood = await fs.readFile(fileName);
+const allRecipes =JSON.parse(allFood)
+allRecipes.push(newRecipe)
+const recipeJSON = JSON.stringify(newRecipe)
+await fs.writeFile(fileName, recipeJSON)
+console.log (allRecipes)
+return(allRecipes)
+}
+
+const newFood = {
+    "ID": "4",
+    "title": "4",
+    "ingredients": ["3"],
+    "instructions": "3",
+    "image": "https://natashaskitchen.com/wp-content/uploads/2019/04/Best-Burger-4-500x375.jpg"
+};
+createRecipe(newFood)
+
 
 // UPDATE A RECIPE BY ID
 export async function updateRecipeByID(id, updatedRecipe) {}
