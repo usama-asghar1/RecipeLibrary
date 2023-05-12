@@ -25,10 +25,13 @@ export async function createRecipe(newRecipe) {
 const allFood = await fs.readFile(fileName);
 const allRecipes =JSON.parse(allFood)
 allRecipes.push(newRecipe)
+newRecipe.id = uuidv4()
 const recipeJSON = JSON.stringify(allRecipes, newRecipe)
 await fs.writeFile(fileName, recipeJSON)
 return(allRecipes)
 }
+
+
 
 // UPDATE A RECIPE BY ID
 export async function updateRecipeByID(id, updatedRecipe) {
