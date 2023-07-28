@@ -10,7 +10,7 @@ You will need `node` and `npm` installed on your machine.
 
 Clone the repo:
 
-`https://github.com/usama-asghar1/recipe-library`
+`https://github.com/usama-asghar1/RecipeLibrary.git`
 
 Install the required npm modules:
 
