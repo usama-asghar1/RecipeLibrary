@@ -1,43 +1,27 @@
-
 const url = "http://localhost:3000";
+
 const recipesSection = document.querySelector("#recipes");
 const getRecipeButton = document.querySelector("#get-recipes");
 const submitButton = document.querySelector("button[type='submit']");
 const ingredientButton = document.querySelector("#add-ingredient");
 const ingredientsInput = document.querySelector("#ingredients-input");
 const ingredientsList = document.querySelector("#ingredients-list");
-const recipeIdInput = document.querySelector("#recipe-id");
 
 ingredientButton.addEventListener("click", addIngredient);
 submitButton.addEventListener("click", handleSubmit);
 getRecipeButton.addEventListener("click", handleClick);
-recipeIdInput.addEventListener("input", handleSearch);
-
-const darkModeToggle = document.getElementById('dark-mode-toggle');
-const body = document.querySelector('body');
-
-darkModeToggle.addEventListener('click', () => {
-  body.classList.toggle('dark-mode');
-});
-
-async function handleSearch() {
-    const recipeId = recipeIdInput.value;
-    const response = await fetch(`${url}/api/recipes/${recipeId}`);
-    const { payload } = await response.json();
-    recipesSection.innerHTML = "";
-    renderRecipe(payload);
-}
 
 function addIngredient(event) {
-    event.preventDefault();
-    const li = document.createElement("li");
-    const { value } = ingredientsInput;
-    if (value === "") {
-        return;
-    }
-    li.innerText = value;
-    ingredientsInput.value = "";
-    ingredientsList.appendChild(li);
+  event.preventDefault();
+
+  const li = document.createElement("li");
+  const { value } = ingredientsInput;
+  if (value === "") {
+    return;
+  }
+  li.innerText = value;
+  ingredientsInput.value = "";
+  ingredientsList.appendChild(li);
 }
 
 function handleSubmit(event) {
@@ -48,13 +32,14 @@ function handleSubmit(event) {
 
 async function createRecipe() {
   console.log(gatherFormData());
-  const response = await fetch(`${url}/api/recipes`, {
+  const response = await fetch(`${url}/api/recipes/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(gatherFormData()),
   });
   const data = await response.json();
   console.log(data);
+  getRecipes();
 }
 
 function gatherFormData() {
@@ -80,7 +65,6 @@ async function getRecipes() {
   const response = await fetch(`${url}/api/recipes`);
   const { payload } = await response.json();
   recipesSection.innerHTML = "";
-  console.log(payload);
   payload.forEach(renderRecipe);
 }
 
@@ -89,7 +73,23 @@ function renderRecipe(recipe) {
   recipesSection.appendChild(article);
 }
 
-function createRecipeView({ title, ingredients, instructions, image }) {
+function createDeleteButton(id) {
+  const button = document.createElement("Button");
+  button.innerText = "Delete";
+  button.classList.add("deleteButton");
+  button.addEventListener("click", async function () {
+    console.log(id);
+    const response = await fetch(`${url}/api/recipes/${id}`, {
+      method: "DELETE",
+    });
+    if (response.status === 200) {
+      getRecipes();
+    }
+  });
+  return button;
+}
+
+function createRecipeView({ id, title, ingredients, instructions, image }) {
   const article = document.createElement("article");
   const h2 = document.createElement("h2");
   h2.innerText = title;
@@ -99,10 +99,14 @@ function createRecipeView({ title, ingredients, instructions, image }) {
   img.src = image;
   img.alt = title;
   const list = createIngredientsList(ingredients);
+  const deleteButton = createDeleteButton(id);
+
   article.appendChild(h2);
   article.appendChild(img);
   article.appendChild(list);
   article.appendChild(p);
+  article.appendChild(deleteButton);
+
   return article;
 }
 
@@ -118,6 +122,11 @@ function createIngredient(ingredient) {
   const li = document.createElement("li");
   li.innerHTML = ingredient;
   return li;
+}
+
+function handleDelete(event) {
+  event.preventDefault();
+  console.log("hey");
 }
 
 getRecipes();
